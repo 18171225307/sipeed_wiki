@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+<html lang="en"  class="">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="keywords" content="">
+    
+    
+    <meta name="description" content="">
+    
+    <meta name="generator" content="teedoc">
+    <meta name="theme" content="teedoc-plugin-theme-default">
+    
+        
+        <meta name="markdown-generator" content="teedoc-plugin-markdown-parser">
+        
+        <script>
+MathJax = {"loader": {"load": ["output/svg"]}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]]}, "svg": {"fontCache": "global"}};
+</script>
+        
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+        <script src="/maixpy/static/js/theme_default/pre_main.js"></script>
+        
+        <link rel="stylesheet" href="/maixpy/static/css/theme_default/prism.min.css" type="text/css"/>
+        
+        <link rel="stylesheet" href="/maixpy/static/css/theme_default/viewer.min.css" type="text/css"/>
+        
+        <link rel="stylesheet" href="/maixpy/static/css/theme_default/dark.css" type="text/css"/>
+        
+        <link rel="stylesheet" href="/maixpy/static/css/theme_default/light.css" type="text/css"/>
+        
+        <script src="/maixpy/static/js/theme_default/jquery.min.js"></script>
+        
+        <script src="/maixpy/static/js/theme_default/split.js"></script>
+        
+        <link rel="stylesheet" href="/maixpy/static/css/search/style.css" type="text/css"/>
+        
+        <link rel="stylesheet" href="/maixpy/static/css/custom.css" type="text/css"/>
+        
+    
+    
+    <title>MaixPy Custom (Offline Training) AI Model and Running - MaixPy</title>
+    
+    <script type="text/javascript">js_vars = {}</script>
+    <script type="text/javascript">metadata = {"tags": [], "date": "2024-04-29", "update": [{"date": "2024-4-23", "version": "v1.0", "author": "dragonforward", "content": "Added YOLOv5s deployment"}], "ts": 1714371884, "author": "", "brief": "", "cover": ""}</script>
+</head>
+
+
+<body class="type_doc">
+    
+    <div id="navbar">
+        <div id="navbar_menu">
+            <a class="site_title" href="/maixpy/en/">
+                
+                
+                    <h2>MaixPy</h2>
+                
+        </a>
+            <a id="navbar_menu_btn"></a>
+        </div>
+        <div id="navbar_items">
+            <div>
+                <ul id="nav_left">
+<li class=""><a  href="https://wiki.sipeed.com">Sipeed Wiki</a></li>
+<li class="active"><a  href="/maixpy/doc/en/index.html">Documentation</a></li>
+<li class=""><a  href="/maixpy/api/index.html">API</a></li>
+<li class=""><a  href="/maixpy/doc/en/faq.html">FAQ</a></li>
+</ul>
+
+            </div>
+            <div>
+                <ul id="nav_right">
+<li class=""><a target="_blank" href="https://github.com/sipeed/maixpy"><img src='/maixpy/static/image/github-fill.svg' style='height: 1.5em;vertical-align: middle;'>&nbsp;</a></li>
+<li class="sub_items "><a  ><img src='/maixpy/static/image/language.svg' style='height: 1.5em;vertical-align: middle;'>&nbsp;English</a><ul><li class="active"><a  href="/maixpy/doc/en/vision/custmize_model.html">English</a></li>
+<li class=""><a  href="/maixpy/doc/zh/vision/custmize_model.html">中文</a></li>
+</ul></li>
+</ul>
+
+                <ul class="nav_plugins"><li><a id="themes" class="light"></a></li></ul><ul class="nav_plugins"><li><a id="search"><span class="icon"></span><span class="placeholder">Search</span>
+                            <div id="search_hints">
+                                <span id="search_input_hint">Keywords separated by space</span>
+                                <span id="search_loading_hint">Loading, wait please ...</span>
+                                <span id="search_download_err_hint">Download error, please check network and refresh again</span>
+                                <span id="search_other_docs_result_hint">Result from other docs</span>
+                                <span id="search_curr_doc_result_hint">Result from current doc</span>
+                            </div></a></li></ul>
+            </div>
+        </div>
+    </div>
+    
+    <div id="wrapper">
+        <div id="sidebar_wrapper">
+            <div id="sidebar">
+                <div id="sidebar_title">
+                    
+                </div>
+                <ul class="show">
+<li class="not_active with_link"><a href="/maixpy/doc/en/index.html"><span class="label">Quick Start</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/faq.html"><span class="label">FAQ</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">Base</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/os.html"><span class="label">Burning system</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/app_usage.html"><span class="label">App uses</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/maixpy_upgrade.html"><span class="label">Update MaixPy</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/maixvision.html"><span class="label">MaixVision uses</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/python.html"><span class="label">Python syntax</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/linux_basic.html"><span class="label">Linux fundamentals</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/python_pkgs.html"><span class="label">Add python packages</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/basic/app.html"><span class="label">Apps development</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">Basic images and algorithms</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/display.html"><span class="label">Screen uses</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/camera.html"><span class="label">Camera uses</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/image_ops.html"><span class="label">Image control</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/find_blobs.html"><span class="label">Finding color blocks</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/qrcode.html"><span class="label">QRcode identity</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/apriltag.html"><span class="label">AprilTag identity</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">AI Vision</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/ai.html"><span class="label">AI vision knowledge</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/classify.html"><span class="label">AI object classify</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/yolov5.html"><span class="label">YOLOv5 object detect</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/face_recognition.html"><span class="label">Face detect</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/body_key_points.html"><span class="label">Human critical point detection</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/self_learn_classifier.html"><span class="label">Self-learning classifier</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/self_learn_detector.html"><span class="label">Self-learning detector</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/object_track.html"><span class="label">Object tracking and counting</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/vision/ocr.html&from=/doc/en/vision/ocr.html"><span class="label">OCR</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/vision/maixhub_train.html"><span class="label">MaixHub online AI training</span><span class=""></span></a></li>
+<li class="active with_link"><a href="/maixpy/doc/en/vision/custmize_model.html"><span class="label">Custom model</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">AI audio</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/audio/record.html&from=/doc/en/audio/record.html"><span class="label">Audio record</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/audio/play.html&from=/doc/en/audio/play.html"><span class="label">Play audio</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/audio/classifier.html&from=/doc/en/audio/classifier.html"><span class="label">AI voice classifier</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/audio/keyword.html&from=/doc/en/audio/keyword.html"><span class="label">Keyword recognize</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/audio/recognize.html"><span class="label">Real-time voice recognize</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/audio/synthesis.html&from=/doc/en/audio/synthesis.html"><span class="label">Speech synthesis</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">Video</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/video/record.html&from=/doc/en/video/record.html"><span class="label">Video record</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/video/play.html&from=/doc/en/video/play.html"><span class="label">Play video</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/video/jpeg_streaming.html"><span class="label">JPEG stream</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/video/rtsp.html&from=/doc/en/video/rtsp.html"><span class="label">RTSP stream</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">On-chip peripherals</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/peripheral/gpio.html"><span class="label">GPIO</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/peripheral/uart.html"><span class="label">UART</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/peripheral/i2c.html"><span class="label">I2C</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/peripheral/pwm.html"><span class="label">PWM</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/peripheral/spi.html"><span class="label">SPI</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/peripheral/wdt.html"><span class="label">WDT watchdog</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">Off-chip modules</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/modules/acc.html"><span class="label">Accelerometer</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/modules/temp_hum.html&from=/doc/en/modules/temp_hum.html"><span class="label">Temperature and humidity</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/modules/tof.html"><span class="label">TOF</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/modules/thermal_cam.html"><span class="label">Thermal imaging</span><span class=""></span></a></li>
+<li class="not_active no_link sidebar_category"><span class="label">Advanced</span></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/source_code/contribute.html"><span class="label">Contribute</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/source_code/build.html"><span class="label">Build source code</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/source_code/faq.html"><span class="label">MaixPy Source FAQ</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/source_code/add_c_module.html"><span class="label">Write in C/C++</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/source_code/maixcdk.html"><span class="label">MaixCDK develop</span><span class=""></span></a></li>
+<li class="not_active with_link"><a href="/maixpy/doc/en/pro/compile_os.html"><span class="label">Build firmware</span><span class=""></span></a></li>
+</ul>
+
+            </div>
+        </div>
+        <div id="article">
+            <div id="menu_wrapper">
+                <div id="menu">
+                </div>
+            </div>
+            <div id="content_wrapper">
+                <div id="content_body">
+                    <div id="article_head">
+                        <div id="article_title">
+                            
+                            <h1>MaixPy Custom (Offline Training) AI Model and Running</h1>
+                            
+                        </div>
+                        <div id="article_tags">
+                            <ul>
+                            
+                            </ul>
+                        </div>
+                        <div id="article_info">
+                        <div id="article_info_left">
+                            <span class="article_author">
+                                
+                            </span>
+                            
+                                <span class="article_date" title="Last modify date: 2024-04-29">
+                                    2024-04-29
+                                </span>
+                            
+                        </div>
+                        <div id="article_info_right">
+                            
+                            <div id="source_link">
+                                <a href="https://github.com/sipeed/MaixPy/blob/main/docs/doc/en/vision/custmize_model.md" target="_blank">
+                                    Edit this page
+                                </a>
+                            </div>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    <div id="article_tools">
+                        <span></span>
+                        <span id="toc_btn"></span>
+                    </div>
+                    <div id="update_history">
+                        
+                        
+                        <details open>
+                        
+                            <summary>Update history</summary>
+                            <div>
+                                <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Version</th>
+                                                <th>Author</th>
+                                                <th>Update content</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                                <tr>
+                                                    <td>2024-4-23</td>
+                                                    <td>v1.0</td>
+                                                    <td>dragonforward</td>
+                                                    <td>
+                                                    
+                                                        Added YOLOv5s deployment
+                                                    
+                                                    </td>
+                                                </tr>
+                                            
+                                        </tbody>
+                                </table>
+                            </div>
+                        </details>
+                        
+                    </div>
+                    <div id="article_content">
+                        
+                            <blockquote>
+<p>This post is contributed by the community user dragonforward</p>
+</blockquote>
+<blockquote>
+<p>This blog will show you how to deploy your own YOLOv5s model (the author demonstrates a hard hat model) step by step from scratch. The training part refers to the author's previous work, and those who have already trained their models can skip this part, although there are some differences.</p>
+</blockquote>
+<h2 id="%3Cstrong%3EObtain-Custom-Trained-YOLOv5s-ONNX-Model%3C/strong%3E"><strong>Obtain Custom-Trained YOLOv5s ONNX Model</strong></h2>
+<h3 id="%3Cstrong%3EPrepare-Custom-Dataset-%28The-author-uses-the-VOC-dataset%29%3C/strong%3E"><strong>Prepare Custom Dataset (The author uses the VOC dataset)</strong></h3>
+<ul>
+<li><code>Dataset Directory Structure</code> is as follows:</li>
+</ul>
+
+<pre class="language-none"><code class="language-none">└─VOC2028:        Custom dataset
+    ├─Annotations    Stores the dataset label files in XML format
+    ├─ImageSets        Dataset split files
+    │  └─Main
+    ├─JPEGImages    Stores the dataset images
+</code></pre>
+<ul>
+<li><code>Split the Dataset</code></li>
+</ul>
+<p>Execute <code>python3 split_train_val.py</code> in the <code>split_train_val.py</code> file path, and you will get the following directory structure:</p>
+
+<pre class="language-none"><code class="language-none">└─VOC2028:        Custom dataset
+    ├─Annotations    Stores the dataset label files in XML format
+    ├─ImageSets        Dataset split files
+    │  └─Main test.txt
+          └─test.txt
+          └─train.txt
+          └─val.txt
+    ├─JPEGImages    Stores the dataset images
+    ├─split_train_val.py    Python file for splitting the dataset
+</code></pre>
+<p><code>split_train_val.py file code</code>:</p>
+
+<pre class="language-python"><code class="language-python"># -*- coding: utf-8 -*-
+&quot;&quot;&quot;
+Author: dragonforward
+Description: Split into training, validation, and test sets in the ratio of 8:1:1, 8 for training, 1 for validation, and 1 for testing.
+&quot;&quot;&quot;
+import os
+import random
+import argparse
+
+parser = argparse.ArgumentParser()
+# Address of the XML files, modify according to your data. XML files are usually stored in Annotations
+parser.add_argument('--xml_path', default='Annotations/', type=str, help='input xml label path')
+# Dataset split, choose the address under your data's ImageSets/Main
+parser.add_argument('--txt_path', default='ImageSets/Main/', type=str, help='output txt label path')
+opt = parser.parse_args()
+
+train_percent = 0.8  # Proportion of the training set
+val_percent = 0.1    # Proportion of the validation set
+test_persent = 0.1   # Proportion of the test set
+
+xmlfilepath = opt.xml_path
+txtsavepath = opt.txt_path
+total_xml = os.listdir(xmlfilepath)
+
+if not os.path.exists(txtsavepath):
+    os.makedirs(txtsavepath)
+
+num = len(total_xml)  
+list = list(range(num))
+
+t_train = int(num * train_percent)  
+t_val = int(num * val_percent)
+
+train = random.sample(list, t_train)
+num1 = len(train)
+for i in range(num1):
+    list.remove(train[i])
+
+
+val_test = [i for i in list if not i in train]
+val = random.sample(val_test, t_val)
+num2 = len(val)
+for i in range(num2):
+    list.remove(val[i])
+
+
+file_train = open(txtsavepath + '/train.txt', 'w')
+file_val = open(txtsavepath + '/val.txt', 'w')
+file_test = open(txtsavepath + '/test.txt', 'w')
+
+for i in train:
+    name = total_xml[i][:-4] + '\n'
+    file_train.write(name)
+
+for i in val:
+    name = total_xml[i][:-4] + '\n'
+    file_val.write(name)    
+
+for i in list:
+    name = total_xml[i][:-4] + '\n'
+    file_test.write(name)
+
+
+file_train.close()
+file_val.close()
+file_test.close()
+</code></pre>
+<ul>
+<li><code>Convert VOC to labels to obtain label files</code></li>
+</ul>
+<p>Directory structure:</p>
+
+<pre class="language-none"><code class="language-none">└─VOC2028:        Custom dataset
+    ├─Annotations    Stores the dataset label files in XML format
+    ├─ImageSets        Dataset split files
+    │  └─Main
+    ├─JPEGImages    Stores the dataset images
+    └─labels        YOLOv5 treats this folder as the training annotation folder
+└─voc_label.py
+</code></pre>
+<p>the <code>voc_label.py</code> file code:</p>
+
+<pre class="language-python"><code class="language-python"># -*- coding: utf-8 -*-
+import xml.etree.ElementTree as ET
+import os
+
+sets = ['train', 'val', 'test']  # If your Main folder doesn't have test.txt, remove 'test'
+classes = [&quot;hat&quot;, &quot;people&quot;]   # Change to your own classes, VOC dataset has the following 20 classes
+# classes = [&quot;brickwork&quot;, &quot;coil&quot;,&quot;rebar&quot;]   # Change to your own classes, VOC dataset has the following 20 classes
+# classes = [&quot;aeroplane&quot;, 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
+#            'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor']  # class names
+# abs_path = os.getcwd() /root/yolov5/data/voc_label.py 
+abs_path = '/root/yolov5/data/'
+
+def convert(size, box):
+    dw = 1. / (size[0])
+    dh = 1. / (size[1])
+    x = (box[0] + box[1]) / 2.0 - 1
+    y = (box[2] + box[3]) / 2.0 - 1
+    w = box[1] - box[0]
+    h = box[3] - box[2]
+    x = x * dw
+    w = w * dw
+    y = y * dh
+    h = h * dh
+    return x, y, w, h
+
+
+def convert_annotation(image_id):
+    in_file = open(abs_path + '/VOC2028/Annotations/%s.xml' % (image_id), encoding='UTF-8')
+    out_file = open(abs_path + '/VOC2028/labels/%s.txt' % (image_id), 'w')
+    tree = ET.parse(in_file)
+    root = tree.getroot()
+    size = root.find('size')
+    w = int(size.find('width').text)
+    h = int(size.find('height').text)
+    for obj in root.iter('object'):
+        difficult = obj.find('difficult').text
+        # difficult = obj.find('Difficult').text
+        cls = obj.find('name').text
+        if cls not in classes or int(difficult) == 1:
+            continue
+        cls_id = classes.index(cls)
+        xmlbox = obj.find('bndbox')
+        b = (float(xmlbox.find('xmin').text), float(xmlbox.find('xmax').text), float(xmlbox.find('ymin').text),
+             float(xmlbox.find('ymax').text))
+        b1, b2, b3, b4 = b
+        # Bounding box correction
+        if b2 &gt; w:
+            b2 = w
+        if b4 &gt; h:
+            b4 = h
+        b = (b1, b2, b3, b4)
+        bb = convert((w, h), b)
+        out_file.write(str(cls_id) + &quot; &quot; + &quot; &quot;.join([str(a) for a in bb]) + '\n')
+
+
+for image_set in sets:
+    if not os.path.exists(abs_path + '/VOC2028/labels/'):
+        os.makedirs(abs_path + '/VOC2028/labels/')
+
+    image_ids = open(abs_path + '/VOC2028/ImageSets/Main/%s.txt' % (image_set)).read().strip().split()
+    list_file = open(abs_path + '/VOC2028/%s.txt' % (image_set), 'w')
+    for image_id in image_ids:
+        list_file.write(abs_path + '/VOC2028/JPEGImages/%s.jpg\n' % (image_id))  # Either complete the path yourself, or only writing half may cause an error
+        convert_annotation(image_id)
+    list_file.close()
+</code></pre>
+<p><img src="assets/custmize_model8.png" alt="custmize_model8" /></p>
+<h3 id="%3Cstrong%3ETrain-the-Model%3C/strong%3E"><strong>Train the Model</strong></h3>
+<ul>
+<li>Configure the environment</li>
+</ul>
+
+<pre class="language-none"><code class="language-none">git clone https://github.com/ultralytics/yolov5
+cd yolov5
+pip install -r requirements.txt
+pip install onnx
+</code></pre>
+<ul>
+<li>Download pre-trained weights (the author tried both v7.0 and v6.0 pt, and both work)</li>
+</ul>
+
+<pre class="language-none"><code class="language-none">https://github.com/ultralytics/yolov5/releases/download/v7.0/yolov5s.pt
+</code></pre>
+<p><img src="assets/custmize_model11.png" alt="custmize_model11" /></p>
+<ul>
+<li>Train the model (the author used the school's cluster for training)</li>
+</ul>
+
+<pre class="language-none"><code class="language-none">python3 train.py --weights weights/yolov5s.pt --cfg models/yolov5s.yaml --
+data data/safthat.yaml --epochs 150 --batch-size 16 --multi-scale --device 0
+
+</code></pre>
+<p><img src="assets/custmize_model9.png" alt="custmize_model9" /></p>
+
+<pre class="language-none"><code class="language-none">python3 detect.py --source /root/yolov5/data/images/000000.jpg --weights /root/yolov5/runs/train/exp13/weights/best.pt --conf-thres 0.25
+</code></pre>
+<p><img src="assets/custmize_model10.png" alt="custmize_model10" /></p>
+<ul>
+<li>Export the ONNX model. Since the school server is currently in class, they can allocate me a computer only after their class is over. So I used the local conda environment on my laptop to export it. The reason for using <code>-imgsz 224 320</code> is that it is more suitable for the screen. I also tried 640_640, but the camera reported an error, suggesting that it should be 640_480. Then I saw that the Sipeed YOLOv5s was 320*224, so I kept it consistent with theirs.</li>
+</ul>
+
+<pre class="language-none"><code class="language-none">python export.py --weights yolov5s_hat.pt --include onnx --opset 16 --imgsz 224 320
+</code></pre>
+<p><img src="assets/custmize_model5.png" alt="custmize_model5" /></p>
+<p>You can view the model by entering netron.app in the URL, and there are three outputs:</p>
+<p><img src="assets/custmize_model2.png" alt="custmize_model2" /></p>
+<p>Here are the author's three outputs:</p>
+
+<pre class="language-none"><code class="language-none">onnx::Shape_329
+onnx::Shape_384
+onnx::Shape_439
+</code></pre>
+<h2 id="Model-Conversion-%28Key-Step%29">Model Conversion (Key Step)</h2>
+<h3 id="%3Cstrong%3EInstall-Docker-Environment-%28Skip-if-already-installed%29%3C/strong%3E"><strong>Install Docker Environment (Skip if already installed)</strong></h3>
+
+<pre class="language-none"><code class="language-none">Install the basic software required for Docker
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+Add official source
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot;
+Install Docker
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+</code></pre>
+<h3 id="%3Cstrong%3EStart-the-Model-Quantization-Process-%28%21%21%21%29%3C/strong%3E"><strong>Start the Model Quantization Process (!!!)</strong></h3>
+<h3 id="%3Cstrong%3EPreparation%3C/strong%3E"><strong>Preparation</strong></h3>
+
+<pre class="language-none"><code class="language-none">Download from the following URL
+https://github.com/sophgo/tpu-mlir/releases/tag/v1.7
+tpu-mlir-resource.tar and tpu_mlir-1.7-py3-none-any.whl
+</code></pre>
+<p><img src="assets/custmize_model3.png" alt="custmize_model3" /></p>
+<p>The reason for pulling the latest version is that I failed with version 3.1, as the tools are constantly being updated, so it's better to keep up with the latest version. You can see in the image below that I also tried version 3.1.</p>
+<p><img src="assets/custmize_model7.png" alt="custmize_model7" /></p>
+
+<pre class="language-none"><code class="language-none">docker pull sophgo/tpuc_dev:latest
+
+After entering the container, copy the two prepared files to the workspace directory
+
+root@3d517bc7f51f:/workspace/model_yolov5s# cd ..
+root@3d517bc7f51f:/workspace# ls
+model_yolov5s  tpu-mlir-resource  tpu-mlir-resource.tar  tpu_mlir-1.7-py3-none-any.whl
+root@3d517bc7f51f:/workspace# 
+
+Choose one of the following two options, I recommend the second one for offline installation
+pip install tpu_mlir[all] or pip install tpu_mlir-*-py3-none-any.whl[all]
+The author chose the second option
+pip install tpu_mlir-1.7-py3-none-any.whl
+And install all its dependencies
+pip install tpu_mlir-1.7-py3-none-any.whl[all]
+Extract
+tar -xvf tpu-mlir-resource.tar
+Rename the folder
+mv regression/ tpu-mlir-resource/
+
+
+mkdir model_yolov5s &amp;&amp; cd model_yolov5s
+
+cp -rf ../tpu_mlir_resource/dataset/COCO2017 .
+cp -rf ../tpu_mlir_resource/image .
+
+
+Transfer the previously prepared 100 images, one test image, and the ONNX model to the following location
+root@3d517bc7f51f:/workspace# cd model_yolov5s/
+root@3d517bc7f51f:/workspace/model_yolov5s# ls
+COCO2017  image  workspace  yolov5n_hat.onnx  yolov5s_hat.onnx
+root@3d517bc7f51f:/workspace/model_yolov5s# cd COCO2017/
+root@3d517bc7f51f:/workspace/model_yolov5s/COCO2017# ls
+000000.jpg  000011.jpg  000022.jpg  000032.jpg  000042.jpg  000053.jpg  000066.jpg  000076.jpg  000086.jpg  000096.jpg
+000002.jpg  000012.jpg  000023.jpg  000033.jpg  000043.jpg  000054.jpg  000067.jpg  000077.jpg  000087.jpg  000101.jpg
+000003.jpg  000013.jpg  000024.jpg  000034.jpg  000044.jpg  000055.jpg  000068.jpg  000078.jpg  000088.jpg  000102.jpg
+000004.jpg  000014.jpg  000025.jpg  000035.jpg  000045.jpg  000058.jpg  000069.jpg  000079.jpg  000089.jpg  000103.jpg
+000005.jpg  000015.jpg  000026.jpg  000036.jpg  000046.jpg  000059.jpg  000070.jpg  000080.jpg  000090.jpg  000104.jpg
+000006.jpg  000016.jpg  000027.jpg  000037.jpg  000048.jpg  000061.jpg  000071.jpg  000081.jpg  000091.jpg  000105.jpg
+000007.jpg  000017.jpg  000028.jpg  000038.jpg  000049.jpg  000062.jpg  000072.jpg  000082.jpg  000092.jpg  000106.jpg
+000008.jpg  000019.jpg  000029.jpg  000039.jpg  000050.jpg  000063.jpg  000073.jpg  000083.jpg  000093.jpg  000107.jpg
+000009.jpg  000020.jpg  000030.jpg  000040.jpg  000051.jpg  000064.jpg  000074.jpg  000084.jpg  000094.jpg  000108.jpg
+000010.jpg  000021.jpg  000031.jpg  000041.jpg  000052.jpg  000065.jpg  000075.jpg  000085.jpg  000095.jpg  000109.jpg
+root@3d517bc7f51f:/workspace/model_yolov5s/COCO2017# ls -l | grep &quot;^-&quot; | wc -l
+100
+root@3d517bc7f51f:/workspace/model_yolov5s/COCO2017# 
+
+You can use ls -l | grep &quot;^-&quot; | wc -l to check the number of images. The author replaced the 100 helmet images and the test image in the COCO2017 folder.
+
+Go back to model_yolov5s
+root@3d517bc7f51f:/workspace/model_yolov5s/COCO2017# cd ..
+root@3d517bc7f51f:/workspace/model_yolov5s# ls
+COCO2017  image  workspace  yolov5n_hat.onnx  yolov5s_hat.onnx
+root@3d517bc7f51f:/workspace/model_yolov5s# 
+
+Next
+mkdir workspace &amp;&amp; cd workspace
+Execute the following command to convert ONNX to MLIR (remember to replace output_names with your own)
+model_transform \
+--model_name yolov5s \
+--model_def ../yolov5s_hat.onnx \
+--input_shapes [[1,3,224,320]] \
+--mean 0.0,0.0,0.0 \
+--scale 0.0039216,0.0039216,0.0039216 \
+--keep_aspect_ratio \
+--pixel_format rgb \
+--output_names onnx::Shape_329,onnx::Shape_439,onnx::Shape_384 \
+--test_input ../image/hat.jpg \
+--test_result yolov5s_top_outputs.npz \
+--mlir yolov5s.mlir
+
+Execute the following command to convert MLIR to INT8 model, before converting to INT8 model, you need to run calibration to obtain the calibration table
+run_calibration yolov5s.mlir \
+--dataset ../COCO2017 \
+--input_num 100 \
+-o yolov5s_cali_table
+Then execute the following
+model_deploy \
+--mlir yolov5s.mlir \
+--quantize INT8 \
+--calibration_table yolov5s_cali_table \
+--processor cv181x \
+--test_input yolov5s_in_f32.npz \
+--test_reference yolov5s_top_outputs.npz \
+--tolerance 0.85,0.45 \
+--model yolov5s_cv181x_int8_sym.cvimodel
+
+Finally, you will get the following:
+root@3d517bc7f51f:/workspace/model_yolov5s/workspace# ls
+_weight_map.csv          yolov5s_cv181x_int8_sym.cvimodel         yolov5s_origin.mlir
+build_flag.json          yolov5s_cv181x_int8_sym_final.mlir       yolov5s_top_f32_all_origin_weight.npz
+final_opt.onnx           yolov5s_cv181x_int8_sym_tensor_info.txt  yolov5s_top_f32_all_weight.npz
+yolov5s.mlir             yolov5s_cv181x_int8_sym_tpu.mlir         yolov5s_top_outputs.npz
+yolov5s_cali_table       yolov5s_in_f32.npz                       yolov5s_tpu_addressed_cv181x_int8_sym_weight.npz
+yolov5s_cv181x_int8_sym  yolov5s_opt.onnx.prototxt                yolov5s_tpu_addressed_cv181x_int8_sym_weight_fix.npz
+root@3d517bc7f51f:/workspace/model_yolov5s/workspace# 
+</code></pre>
+<p>Through the above steps, you can obtain the quantized model that can be deployed to the development board.</p>
+<p>Explanation:<br />
+The reason why it's cv181x is because I tried it first and got the following</p>
+
+<pre class="language-none"><code class="language-none">-- [I] load cvimodel from: /root/models/yolov5n.cvimodel
+cvimodel built for cv180x CANNOT run on platform cv181x
+failed to parse cvimodel
+
+</code></pre>
+<h2 id="running-the-model-on-an-actual-device%3A">running the model on an actual device:</h2>
+<ul>
+<li>The contents of <code>yolov5s_hat.mud</code> are as follows:</li>
+</ul>
+
+<pre class="language-none"><code class="language-none">[basic]
+type = cvimodel
+model = yolov5s_hat_cv181x_int8_sym.cvimodel
+
+[extra]
+model_type = yolov5
+input_type = rgb
+mean = 0, 0, 0
+scale = 0.00392156862745098, 0.00392156862745098, 0.00392156862745098
+anchors = 10,13, 16,30, 33,23, 30,61, 62,45, 59,119, 116,90, 156,198, 373,326
+labels = hat,person
+</code></pre>
+<p>Run the code:</p>
+
+<pre class="language-python"><code class="language-python">from maix import camera, display, image, nn, app
+
+detector = nn.YOLOv5(model=&quot;/root/models/yolov5s_hat.mud&quot;)
+cam = camera.Camera(detector.input_width(), detector.input_height(), detector.input_format())
+dis = display.Display()
+print(&quot;www&quot;)
+print(detector.input_width(), detector.input_height(), detector.input_format())
+
+while not app.need_exit():
+    img = cam.read()
+    objs = detector.detect(img, conf_th=0.5, iou_th=0.45)
+    for obj in objs:
+        img.draw_rect(obj.x, obj.y, obj.w, obj.h, color=image.COLOR_RED)
+        msg = f'{detector.labels[obj.class_id]}: {obj.score:.2f}'
+        img.draw_string(obj.x, obj.y, msg, color=image.COLOR_RED)
+    dis.show(img)
+</code></pre>
+<p><img src="assets/custmize_model4.png" alt="custmize_model4" /></p>
+<p>Where 10.84.117.1 is the IP address. Upload the <code>cvmodel</code> and <code>mud</code> files to the <code>/root/models/</code> path.</p>
+<p>After packaging, install the application and run it, or you can run it in the IDE.</p>
+<p><img src="assets/custmize_model6.png" alt="custmize_model6" /></p>
+<p>Video link:</p>
+
+<pre class="language-none"><code class="language-none">https://www.bilibili.com/video/BV1xz421S7Rx/?spm_id_from=333.999.0.0&amp;vd_source=b1fff0f773136d7d05331087929c7739
+</code></pre>
+<h2 id="%3Cstrong%3EAcknowledgments%3C/strong%3E"><strong>Acknowledgments</strong></h2>
+<p>Thanks to <code>谁说现在是冬天呢</code> for some insights.</p>
+
+                        
+                    </div>
+                </div>
+                <div id="previous_next">
+                    <div id="previous">
+                        
+                        <a href="/maixpy/doc/en/vision/maixhub_train.html">
+                            <span class="icon"></span>
+                            <span class="label">MaixHub online AI training</span>
+                        </a>
+                        
+                    </div>
+                    <div id="next">
+                        
+                        <a href="/maixpy/doc/en/no_translate.html?ref=/doc/zh/audio/record.html&from=/doc/en/audio/record.html">
+                            <span class="label">Audio record</span>
+                            <span class="icon"></span>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div id="comments-container"></div>
+            </div>
+            <div id="toc_wrapper">
+                <div id="toc">
+                    <div id="toc_content">
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a id="to_top" href="#"></a>
+    <div id="doc_footer">
+        <div id="footer">
+            <div id="footer_top">
+                <ul>
+<li><a>Links</a><ul><li><a target="_blank" href="https://wiki.sipeed.com">Sipeed Wiki</a></li>
+<li><a target="_blank" href="https://www.sipeed.com">Sipeed Official</a></li>
+<li><a target="_blank" href="https://maixhub.com/">MaixHub</a></li>
+<li><a  href="/maixpy/sitemap.xml">Site map</a></li>
+<li><a target="_blank" href="https://github.com/neutree/teedoc">Generated by teedoc</a></li>
+</ul>
+</li>
+<li><a>Source code</a><ul><li><a target="_blank" href="https://github.com/sipeed/maixpy">MaixPy source code</a></li>
+<li><a target="_blank" href="https://github.com/sipeed/MaixCDK">MaixCDK source code</a></li>
+<li><a target="_blank" href="https://github.com/sipeed/sipeed_wiki">Wiki source code</a></li>
+<li><a target="_blank" href="https://github.com/sipeed">Open source projects</a></li>
+</ul>
+</li>
+<li><a>Follow us</a><ul><li><a target="_blank" href="https://twitter.com/SipeedIO">twitter</a></li>
+<li><a target="_blank" href="https://sipeed.taobao.com/">Taobao</a></li>
+<li><a target="_blank" href="https://www.aliexpress.com/store/911876460">AliExpress</a></li>
+<li><a target="_blank" href="https://github.com/sipeed">github</a></li>
+<li><a><a>Wechat </a><img src='/maixpy/static/image/wechat.png'></a>
+</li>
+</ul>
+</li>
+<li><a>Contact us</a><ul><li><a>Tel: +86 0755-27808509</a>
+</li>
+<li><a>Bussiness: support@sipeed.com</a>
+</li>
+<li><a>Addr: 深圳市宝安区新湖路4008号蘅芳科技办公大厦A座-2101C</a>
+</li>
+<li><a  href="https://wiki.sipeed.com/join_us.html">Join us</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <div id="footer_bottom">
+                <ul>
+<li><a target="_blank" href="https://www.sipeed.com">©2018-2023 深圳矽速科技有限公司</a></li>
+<li><a target="_blank" href="https://beian.miit.gov.cn/#/Integrated/index">粤ICP备19015433号</a></li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+        <script src="/maixpy/teedoc-plugin-markdown-parser/mermaid.min.js"></script>
+    
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    
+        <script src="/maixpy/static/js/theme_default/tocbot.min.js"></script>
+    
+        <script src="/maixpy/static/js/theme_default/main.js"></script>
+    
+        <script src="/maixpy/static/js/theme_default/viewer.min.js"></script>
+    
+        <script src="/maixpy/static/css/theme_default/prism.min.js"></script>
+    
+        <script src="/maixpy/static/js/search/search_main.js"></script>
+    
+        <script src="/maixpy/static/js/custom.js"></script>
+    
+</body>
+
+</html>
